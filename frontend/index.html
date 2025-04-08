@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PulseDeck - Cyberpunk Music Library</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap"
+      rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="auth-box">
+        <h1 class="logo">PULSE<span>DECK</span></h1>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="auth-form">
+          <h2>Zaloguj się</h2>
+          <input type="email" id="email" placeholder="Email" required />
+          <input type="password" id="password" placeholder="Hasło" required />
+          <button type="submit">Zaloguj</button>
+          <p>Nie masz konta? <a href="#" id="toRegister">Zarejestruj się</a></p>
+        </form>
+
+        <!-- Registration Form -->
+        <form id="registerForm" class="auth-form hidden">
+          <h2>Rejestracja</h2>
+          <input
+            type="text"
+            id="regUsername"
+            placeholder="Nazwa użytkownika"
+            required />
+          <input type="email" id="regEmail" placeholder="Email" required />
+          <input
+            type="password"
+            id="regPassword"
+            placeholder="Hasło"
+            required />
+          <button type="submit">Zarejestruj się</button>
+          <p>Masz już konto? <a href="#" id="toLogin">Zaloguj się</a></p>
+        </form>
+      </div>
+    </div>
+    <script src="js/app.js"></script>
+  </body>
+</html>
