@@ -1,11 +1,12 @@
-const express = require("express");
-const router = express.Router();
-const { protect } = require("../middleware/authMiddleware");
-const {
+import { Router } from "express";
+const router = Router();
+import { protect } from "../middleware/authMiddleware.js"; // Correct import
+
+import {
   createPlaylist,
   getUserPlaylists,
   getPublicPlaylistById,
-} = require("../controllers/playlistController");
+} from "../controllers/playlistController.js";
 
 // POST /api/playlists/create
 router.post("/create", protect, createPlaylist);
@@ -16,4 +17,4 @@ router.get("/", protect, getUserPlaylists);
 // GET /api/playlists/public/:id
 router.get("/public/:id", getPublicPlaylistById);
 
-module.exports = router;
+export default router;

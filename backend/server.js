@@ -1,38 +1,56 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const dotenv = require("dotenv");
+import express from "express";
+import { connect } from "mongoose";
+import cors from "cors";
+import dotenv from "dotenv";
+
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Import route modules
-const authRoutes = require("./routes/authRoutes");
-const songRoutes = require("./routes/songRoutes");
-const playlistRoutes = require("./routes/playlistRoutes");
+import authRoutes from "./routes/authRoutes.js";
+import songRoutes from "./routes/songRoutes.js";
+import playlistRoutes from "./routes/playlistRoutes.js";
 
 // Init app
-const app = express();
 dotenv.config();
+const app = express();
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  })
+);
 app.use(express.json());
+
+// Static public folder
+app.use(express.static(path.join(__dirname, "../frontend")));
+
+// Route fallback for index.html
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend", "index.html"));
+});
 
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/songs", songRoutes);
 app.use("/api/playlists", playlistRoutes);
 
-// Connect to MongoDB
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+// MongoDB connection
+console.log("Connecting to:", process.env.MONGO_URI);
+connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
   .then(() => {
-    console.log("MongoDB connected");
+    console.log("✅ MongoDB connected");
     app.listen(process.env.PORT || 5000, () => {
-      console.log(`Server running on port ${process.env.PORT || 5000}`);
+      console.log(`🚀 Server running on port ${process.env.PORT || 5000}`);
     });
   })
   .catch((err) => {
-    console.error("MongoDB connection error:", err);
+    console.error("❌ MongoDB connection error:", err);
   });

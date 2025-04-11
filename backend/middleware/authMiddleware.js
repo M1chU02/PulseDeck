@@ -1,7 +1,8 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+import jwt from "jsonwebtoken";
+const { verify } = jwt;
+import User from "../models/User.js";
 
-const protect = async (req, res, next) => {
+export const protect = async (req, res, next) => {
   let token;
 
   if (
@@ -10,18 +11,14 @@ const protect = async (req, res, next) => {
   ) {
     try {
       token = req.headers.authorization.split(" ")[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = verify(token, process.env.JWT_SECRET);
 
       req.user = await User.findById(decoded.id).select("-password");
-      next();
+      return next();
     } catch (err) {
       return res.status(401).json({ message: "Nieautoryzowany dostęp" });
     }
   }
 
-  if (!token) {
-    return res.status(401).json({ message: "Brak tokenu autoryzacyjnego" });
-  }
+  return res.status(401).json({ message: "Brak tokenu autoryzacyjnego" });
 };
-
-module.exports = { protect };
